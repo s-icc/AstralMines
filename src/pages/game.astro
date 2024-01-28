@@ -1,0 +1,8 @@
+---
+import Board from "../components/Board.jsx"
+import GameLayout from "../layouts/GameLayout.astro"
+---
+
+<GameLayout difficulty="Easy" >
+    <Board dimension={[9, 7]} minesNumber={8} client:load />
+</GameLayout>

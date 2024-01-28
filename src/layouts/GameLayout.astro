@@ -1,0 +1,15 @@
+---
+import Layout from "./Layout.astro";
+
+const { difficulty } = Astro.props;
+---
+
+<Layout title=`Astral Mines | ${difficulty}`>
+    <h1 slot="title">1m 20s</h1>
+    <slot />
+</Layout>
+<style>
+    h1 {
+        text-shadow: 0 0 20px oklch(var(--p));     
+    }
+</style>
