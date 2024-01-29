@@ -1,6 +1,6 @@
-import Cell from './Cell'
+import { Cell } from './Cell'
 
-export default function Tablero({ dimension, minesNumber }) {
+export const Board = ({ dimension, minesNumber }) => {
 	/*
 	 * 0 = empty
 	 * 1,2,3,... = number

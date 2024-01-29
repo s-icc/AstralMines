@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function Cell({ valor }) {
+export const Cell = ({ valor }) => {
 	const [disabled, setDisabled] = useState(false)
 	const [shot, setShot] = useState(false)
 
