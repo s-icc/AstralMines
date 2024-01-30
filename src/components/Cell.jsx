@@ -1,25 +1,25 @@
-import { useState } from 'react'
+import { Children, useState } from 'react'
 
-export const Cell = ({ valor }) => {
-	const [disabled, setDisabled] = useState(false)
-	const [shot, setShot] = useState(false)
+export const Cell = ({ children }) => {
+	const [isRevealed, setRevealed] = useState(false)
+	const [isFlagged, setFlagged] = useState(false)
 
-	function handleClick() {
-		if (!shot) setDisabled(true)
+	const handleClick = () => {
+		if (!isFlagged) setRevealed(true)
 	}
 
-	function handleContextMenu() {
-		if (!disabled) setShot(!shot)
+	const handleContextMenu = () => {
+		if (!isRevealed) setFlagged(!isFlagged)
 	}
 
 	return (
 		<button
-			disabled={disabled}
+			disabled={isRevealed}
 			className="btn btn-primary w-12 h-12 disabled:btn-outline"
 			onClick={handleClick}
 			onContextMenu={handleContextMenu}
 		>
-			{disabled ? valor : shot ? 'X' : ''}
+			{isRevealed ? children : isFlagged ? '🏳' : ''}
 		</button>
 	)
 }
