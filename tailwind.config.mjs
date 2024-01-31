@@ -6,7 +6,11 @@ export default {
 	},
 	daisyui: {
 		themes: [
+			'forest',
 			'retro',
+			'dracula',
+			'valentine',
+			'night',
 			{
 				genericdark: {
 					primary: '#D931BF',

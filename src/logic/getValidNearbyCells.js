@@ -1,12 +1,11 @@
-import { NEARBY_CELLS } from './constants'
-import { coordsToIndex } from './coordsToIndex'
-import { indexToCoords } from './indexToCoords'
+import { NEARBY_CELLS } from '../utils/constants'
+import { indexToCoords, coordsToIndex } from '../utils/indexCoords'
 
-export const safeCellsPositions = (center, bounds) => {
+export const getValidNearbyCells = (center, bounds) => {
 	// calculate the center position as x and y
 	const centerCoods = indexToCoords(center, bounds.x)
 
-	let positions = [center]
+	let positions = []
 
 	// loop through the nearby cells
 	NEARBY_CELLS.forEach((cell) => {

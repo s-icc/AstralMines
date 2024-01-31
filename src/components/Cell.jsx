@@ -1,25 +1,26 @@
-import { Children, useState } from 'react'
+import { useState } from 'react'
 
 export const Cell = ({ children }) => {
 	const [isRevealed, setRevealed] = useState(false)
-	const [isFlagged, setFlagged] = useState(false)
+	const [isMarked, setMarked] = useState(false)
 
 	const handleClick = () => {
-		if (!isFlagged) setRevealed(true)
+		if (!isMarked) setRevealed(true)
 	}
 
 	const handleContextMenu = () => {
-		if (!isRevealed) setFlagged(!isFlagged)
+		if (!isRevealed) setMarked(!isMarked)
 	}
 
 	return (
 		<button
 			disabled={isRevealed}
-			className="btn btn-primary w-12 h-12 disabled:btn-outline"
+			className="btn btn-primary text-xl w-12 h-12 disabled:btn-outline"
+			style={{ color: 'oklch(var(--a))' }}
 			onClick={handleClick}
 			onContextMenu={handleContextMenu}
 		>
-			{isRevealed ? children : isFlagged ? '🏳' : ''}
+			{isRevealed ? children : isMarked ? '🚩' : ''}
 		</button>
 	)
 }
