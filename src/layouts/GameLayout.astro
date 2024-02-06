@@ -6,7 +6,7 @@ const { difficulty } = Astro.props;
 ---
 
 <Layout title=`Astral Mines | ${difficulty}`>
-    <Timer client:only slot="title" />
+    <Timer client:load slot="title" />
     <slot />
 </Layout>
 <style>

@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, forwardRef, useImperativeHandle, useEffect } from 'react'
 
-export const Cell = ({ children }) => {
+export const Cell = forwardRef(({ children, index, getNearbyRefs }, ref) => {
 	const [isRevealed, setRevealed] = useState(false)
 	const [isMarked, setMarked] = useState(false)
 
@@ -12,6 +12,19 @@ export const Cell = ({ children }) => {
 		if (!isRevealed) setMarked(!isMarked)
 	}
 
+	// execute when the cell is revealed
+	useEffect(() => {
+		if (isRevealed) {
+			const nearbyRefs = getNearbyRefs(index)
+			// if the content is empty, reveals the nearby cells
+			if (children === '') nearbyRefs.map((cell) => cell.reveal())
+		}
+	}, [isRevealed])
+
+	useImperativeHandle(ref, () => ({
+		reveal: () => handleClick()
+	}))
+
 	return (
 		<button
 			disabled={isRevealed}
@@ -19,8 +32,9 @@ export const Cell = ({ children }) => {
 			style={{ color: 'oklch(var(--a))' }}
 			onClick={handleClick}
 			onContextMenu={handleContextMenu}
+			ref={ref}
 		>
 			{isRevealed ? children : isMarked ? '🚩' : ''}
 		</button>
 	)
-}
+})
