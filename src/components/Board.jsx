@@ -6,6 +6,7 @@ import { generateBoardNumbers } from '../logic/generateBoard'
 import { getValidNearbyCells } from '../logic/getValidNearbyCells'
 import { gameState } from '../stores/gameState'
 import { GAME_STATES } from '../utils/constants'
+import { useStore } from '@nanostores/react'
 
 export const Board = ({ dimension, minesNumber }) => {
 	const initialBoard = Array(dimension.x * dimension.y).fill(0)
@@ -16,6 +17,7 @@ export const Board = ({ dimension, minesNumber }) => {
 	const cellsRefs = useRef([])
 	const mineCellsRefs = useRef([])
 	const safeCellsNum = dimension.x * dimension.y - minesNumber
+	const $gameState = useStore(gameState)
 
 	const boardStyle = {
 		gridTemplateColumns: `repeat(${dimension.x}, auto)`
@@ -53,6 +55,14 @@ export const Board = ({ dimension, minesNumber }) => {
 
 		return nearbyRefs
 	}
+
+	useEffect(() => {
+		if ($gameState === GAME_STATES.LOSE) {
+			mineCellsRefs.current.forEach((cell) => cell.revealMine())
+		} else if ($gameState === GAME_STATES.WIN) {
+			mineCellsRefs.current.forEach((cell) => cell.mark())
+		}
+	}, [$gameState])
 
 	useEffect(() => {
 		if (cellsRevealed === safeCellsNum) gameState.set(GAME_STATES.WIN)

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useStore } from '@nanostores/react'
 import { gameState } from '../stores/gameState'
 import { GAME_STATES } from '../utils/constants'
+import { time } from '../stores/time'
 
 export const Timer = () => {
 	const [seconds, setSeconds] = useState(0)
@@ -12,7 +13,7 @@ export const Timer = () => {
 		if ($gameState === GAME_STATES.PLAYING) {
 			const interval = setInterval(() => setSeconds(seconds + 1), 1000)
 			return () => clearInterval(interval)
-		}
+		} else time.set(seconds)
 	}, [$gameState, seconds])
 
 	return (

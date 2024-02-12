@@ -27,6 +27,11 @@ export const Cell = forwardRef(
 			setMarked(!isMarked)
 		}
 
+		const handleRevealedMine = () => {
+			setMarked(false)
+			setRevealed(true)
+		}
+
 		useEffect(() => {
 			setFormattedContent(formatValue(children))
 		}, [children])
@@ -48,9 +53,10 @@ export const Cell = forwardRef(
 
 		useImperativeHandle(ref, () => ({
 			reveal: () => handleClick(),
+			revealMine: () => handleRevealedMine(),
 			mark: () => setMarked(true),
 			isRevealed: () => isRevealed,
-			isMine: () => children === CELL_CONTENT.MINE
+			isMine: () => children === CELL_CONTENT.MINE.VALUE
 		}))
 
 		return (
