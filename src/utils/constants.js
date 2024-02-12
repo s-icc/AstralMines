@@ -1,3 +1,19 @@
+export const GAME_TITLE = 'Astral Mines'
+
+export const DEFAULT_THEME = 'forest'
+
+export const THEMES = {
+	Default: { VALUE: DEFAULT_THEME },
+	Retro: { VALUE: 'retro' },
+	Dracula: { VALUE: 'dracula' },
+	Valentine: { VALUE: 'valentine' },
+	Night: { VALUE: 'night' }
+}
+
+export const THEMES_VALUES = Object.values(THEMES).map((theme) => theme.VALUE)
+
+export const BOARD_SIZE = { x: 9, y: 7 }
+
 export const NEARBY_CELLS = [
 	{ x: -1, y: -1 },
 	{ x: -1, y: 0 },
@@ -10,6 +26,21 @@ export const NEARBY_CELLS = [
 ]
 
 export const CELL_CONTENT = {
-	EMPTY: 0,
-	MINE: -1
+	EMPTY: {
+		VALUE: 0,
+		LABEL: ''
+	},
+	MINE: {
+		VALUE: -1,
+		LABEL: '💣'
+	}
+}
+
+export const CELL_MARK = '🚩'
+
+export const GAME_STATES = {
+	IDLE: 'IDLE',
+	PLAYING: 'PLAYING',
+	WIN: 'WIN',
+	LOSE: 'LOSE'
 }

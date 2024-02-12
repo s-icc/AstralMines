@@ -1,16 +1,18 @@
 ---
+import type { Difficulty } from "../utils/interfaces";
+import { GAME_TITLE, BOARD_SIZE } from "../utils/constants";
 import Layout from "./Layout.astro";
-import { Timer } from "../components/Timer.jsx";
+import { Timer } from "../components/Timer";
+import { Board } from "../components/Board";
 
-const { difficulty } = Astro.props;
+interface Props {
+  difficulty: Difficulty;
+}
+
+const { difficulty } = Astro.props
 ---
 
-<Layout title=`Astral Mines | ${difficulty}`>
+<Layout title=`${GAME_TITLE} | ${difficulty.LABEL}`>
     <Timer client:load slot="title" />
-    <slot />
+    <Board client:load dimension={BOARD_SIZE} minesNumber={difficulty.MINES} />
 </Layout>
-<style>
-    h1 {
-        text-shadow: 0 0 20px oklch(var(--p));     
-    }
-</style>

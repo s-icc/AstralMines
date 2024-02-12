@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import { THEMES_VALUES } from './src/utils/constants'
+
 export default {
 	content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
 	theme: {
@@ -6,11 +9,7 @@ export default {
 	},
 	daisyui: {
 		themes: [
-			'forest',
-			'retro',
-			'dracula',
-			'valentine',
-			'night',
+			...THEMES_VALUES,
 			{
 				genericdark: {
 					primary: '#D931BF',

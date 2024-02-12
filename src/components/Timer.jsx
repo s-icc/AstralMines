@@ -1,17 +1,22 @@
 import { useState, useEffect } from 'react'
+import { useStore } from '@nanostores/react'
+import { gameState } from '../stores/gameState'
+import { GAME_STATES } from '../utils/constants'
 
 export const Timer = () => {
 	const [seconds, setSeconds] = useState(0)
+	const $gameState = useStore(gameState)
 
-	// TODO: stop timer when game is over
-	// update timer every second
+	// start timer when the game is playing
 	useEffect(() => {
-		const interval = setInterval(() => setSeconds(seconds + 1), 1000)
-		return () => clearInterval(interval)
-	}, [seconds])
+		if ($gameState === GAME_STATES.PLAYING) {
+			const interval = setInterval(() => setSeconds(seconds + 1), 1000)
+			return () => clearInterval(interval)
+		}
+	}, [$gameState, seconds])
 
 	return (
-		<h1>
+		<h1 className="timer">
 			{seconds >= 60 ? Math.floor(seconds / 60) + 'm ' : ' '}
 			{seconds % 60}s
 		</h1>

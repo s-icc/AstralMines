@@ -1,40 +1,34 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Cell } from './Cell'
 import { safeCellsPositions } from '../logic/safeCells'
 import { generateMines } from '../logic/generateMines'
 import { generateBoardNumbers } from '../logic/generateBoard'
-import { CELL_CONTENT } from '../utils/constants'
 import { getValidNearbyCells } from '../logic/getValidNearbyCells'
+import { gameState } from '../stores/gameState'
+import { GAME_STATES } from '../utils/constants'
 
 export const Board = ({ dimension, minesNumber }) => {
 	const initialBoard = Array(dimension.x * dimension.y).fill(0)
 	const [board, setBoard] = useState(initialBoard)
-	const [click, setClick] = useState('first')
+	const [firstClick, setFirstClick] = useState(true)
+	const [cellsRevealed, setCellsRevealed] = useState(0)
 	const boardRef = useRef()
 	const cellsRefs = useRef([])
+	const mineCellsRefs = useRef([])
+	const safeCellsNum = dimension.x * dimension.y - minesNumber
 
 	const boardStyle = {
 		gridTemplateColumns: `repeat(${dimension.x}, auto)`
 	}
 
-	const clickActions = {
-		first: (index) => {
-			createBoard(index)
-			setClick('default')
-		},
-		default: (index) => {
-			// const newBoard = revealCells(board, index, dimension)
-			// setBoard(newBoard)
-		}
-	}
-
 	const handleClick = (element) => {
 		if (element === boardRef.current) return
+		if (!firstClick) return
 
 		const parent = element.parentNode
 		const index = Array.from(parent.children).indexOf(element)
-
-		clickActions[click](index)
+		createBoard(index)
+		gameState.set(GAME_STATES.PLAYING)
 	}
 
 	// generate board randomly
@@ -46,12 +40,7 @@ export const Board = ({ dimension, minesNumber }) => {
 		const safeCells = safeCellsPositions(centerIndex, dimension)
 		const minesPositions = generateMines(minesNumber, safeCells, bounds)
 		setBoard(generateBoardNumbers(dimension, minesPositions))
-	}
-
-	const formatValue = (value) => {
-		if (value === CELL_CONTENT.EMPTY) return ''
-		if (value === CELL_CONTENT.MINE) return '💣'
-		return value
+		setFirstClick(false)
 	}
 
 	const getNearbyRefs = (index) => {
@@ -65,6 +54,16 @@ export const Board = ({ dimension, minesNumber }) => {
 		return nearbyRefs
 	}
 
+	useEffect(() => {
+		if (cellsRevealed === safeCellsNum) gameState.set(GAME_STATES.WIN)
+	}, [cellsRevealed])
+
+	useEffect(() => {
+		if (board === initialBoard) return
+
+		mineCellsRefs.current = cellsRefs.current.filter((cell) => cell.isMine())
+	}, [board])
+
 	return (
 		<div
 			className="grid gap-2 select-none"
@@ -77,11 +76,11 @@ export const Board = ({ dimension, minesNumber }) => {
 				<Cell
 					key={index}
 					index={index}
-					bounds={dimension}
 					getNearbyRefs={getNearbyRefs}
 					ref={(el) => (cellsRefs.current[index] = el)}
+					incrementCellsRevealed={() => setCellsRevealed((prev) => prev + 1)}
 				>
-					{formatValue(value)}
+					{value}
 				</Cell>
 			))}
 		</div>

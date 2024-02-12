@@ -1,29 +1,5 @@
 ---
-const { defatulTheme } = Astro.props;
-
-const themes = [
-    {
-        name: "Default",
-        value: defatulTheme
-    },
-    {
-        name: "Retro",
-        value: "retro"
-    },
-    {
-        name: "Dracula",
-        value: "dracula"
-    },
-    {
-        name: "Valentine",
-        value: "valentine"
-    },
-    {
-        name: "Night",
-        value: "night"
-    }
-]
-
+import { THEMES } from "../utils/constants"
 ---
 
 <div class="dropdown dropdown-end">
@@ -33,9 +9,9 @@ const themes = [
     </button>
     <ul class="dropdown-content mt-2 z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-52">
         {
-            themes.map((theme) => (
+            Object.entries(THEMES).map(([key, theme]) => (
                 <li>
-                    <input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label={theme.name} value={theme.value}/>
+                    <input type="radio" name="theme-dropdown" class="theme-controller btn btn-sm btn-block btn-ghost justify-start" aria-label={key} value={theme.VALUE}/>
                 </li>
             ))
         }
