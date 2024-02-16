@@ -1,12 +1,15 @@
 import { useState, forwardRef, useImperativeHandle, useEffect } from 'react'
-import { CELL_CONTENT, CELL_MARK, GAME_STATES } from '../utils/constants'
-import { gameState } from '../stores/gameState'
+import { CELL_CONTENT, CELL_MARK } from '../utils/constants'
+import { GAME_STATES } from '../utils/gameStates'
+import { gameState } from '../stores/gameStateStore'
+import { useStore } from '@nanostores/react'
 
 export const Cell = forwardRef(
-	({ children, index, getNearbyRefs, incrementCellsRevealed }, ref) => {
+	({ children, index, getNearbyRefs, checkWin }, ref) => {
 		const [isRevealed, setRevealed] = useState(false)
 		const [isMarked, setMarked] = useState(false)
 		const [formattedContent, setFormattedContent] = useState('')
+		const $gameState = useStore(gameState)
 
 		const formatValue = (value) => {
 			if (value === CELL_CONTENT.EMPTY.VALUE) return ''
@@ -20,10 +23,14 @@ export const Cell = forwardRef(
 		}
 
 		const handleClick = () => {
+			if ($gameState === GAME_STATES.LOSE || $gameState === GAME_STATES.WIN)
+				return
 			if (!isMarked) setRevealed(true)
 		}
 
 		const handleContextMenu = () => {
+			if ($gameState === GAME_STATES.LOSE || $gameState === GAME_STATES.WIN)
+				return
 			setMarked(!isMarked)
 		}
 
@@ -48,7 +55,8 @@ export const Cell = forwardRef(
 
 			if (children === CELL_CONTENT.MINE.VALUE) gameState.set(GAME_STATES.LOSE)
 
-			incrementCellsRevealed()
+			// check if the game is won
+			checkWin()
 		}, [isRevealed])
 
 		useImperativeHandle(ref, () => ({
@@ -56,7 +64,11 @@ export const Cell = forwardRef(
 			revealMine: () => handleRevealedMine(),
 			mark: () => setMarked(true),
 			isRevealed: () => isRevealed,
-			isMine: () => children === CELL_CONTENT.MINE.VALUE
+			isMine: () => children === CELL_CONTENT.MINE.VALUE,
+			reset: () => {
+				setRevealed(false)
+				setMarked(false)
+			}
 		}))
 
 		return (

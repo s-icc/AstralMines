@@ -1,8 +1,8 @@
 import { useStore } from '@nanostores/react'
-import { gameState } from '../stores/gameState'
-import { time } from '../stores/time'
+import { gameState } from '../stores/gameStateStore'
+import { time } from '../stores/timeStore'
 import { useEffect, useRef, useState } from 'react'
-import { GAME_STATES } from '../utils/constants'
+import { GAME_STATES } from '../utils/gameStates'
 
 export const GameOverModal = () => {
 	const $gameState = useStore(gameState)
@@ -11,15 +11,26 @@ export const GameOverModal = () => {
 	const [title, setTitle] = useState('')
 	const [description, setDescription] = useState('')
 
+	const handleClick = () => {
+		gameState.set(GAME_STATES.IDLE)
+	}
+
+	const modalLabels = {
+		win: {
+			title: 'You Win!',
+			description: 'Congratulations!'
+		},
+		lose: {
+			title: 'Game Over',
+			description: 'Better luck next time'
+		}
+	}
+
 	useEffect(() => {
-		if ($gameState === GAME_STATES.LOSE || $gameState === GAME_STATES.WIN) {
+		if ($gameState === GAME_STATES.MODAL_OPEN) {
 			modalRef.current.showModal()
-			setTitle($gameState === GAME_STATES.LOSE ? 'Game Over' : 'You Win!')
-			setDescription(
-				$gameState === GAME_STATES.LOSE
-					? 'Better luck next time'
-					: 'Congratulations!'
-			)
+			setTitle(modalLabels[GAME_STATES.MODAL_OPEN.status].title)
+			setDescription(modalLabels[GAME_STATES.MODAL_OPEN.status].description)
 		}
 	}, [$gameState])
 
@@ -34,9 +45,14 @@ export const GameOverModal = () => {
 				<h4 className="font-bold text-3xl">{$time}</h4>
 				<p className="py-4">{description}</p>
 				<div className="modal-action">
-					<form method="dialog">
-						<button className="btn btn-outline btn-primary">Close</button>
+					<form method="dialog" className="flex gap-2">
+						<button className="btn btn-primary" onClick={handleClick}>
+							Restart
+						</button>
 					</form>
+					<a href="/" className="btn btn-outline btn-secondary">
+						Home
+					</a>
 				</div>
 			</div>
 		</dialog>

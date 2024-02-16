@@ -12,8 +12,6 @@ export const THEMES = {
 
 export const THEMES_VALUES = Object.values(THEMES).map((theme) => theme.VALUE)
 
-export const BOARD_SIZE = { x: 9, y: 7 }
-
 export const NEARBY_CELLS = [
 	{ x: -1, y: -1 },
 	{ x: -1, y: 0 },
@@ -37,10 +35,3 @@ export const CELL_CONTENT = {
 }
 
 export const CELL_MARK = '🚩'
-
-export const GAME_STATES = {
-	IDLE: 'IDLE',
-	PLAYING: 'PLAYING',
-	WIN: 'WIN',
-	LOSE: 'LOSE'
-}

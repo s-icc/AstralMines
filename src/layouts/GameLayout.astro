@@ -1,6 +1,6 @@
 ---
-import type { Difficulty } from "../utils/interfaces";
-import { GAME_TITLE, BOARD_SIZE } from "../utils/constants";
+import type { Difficulty } from "../types/difficulty";
+import { GAME_TITLE } from "../utils/constants";
 import Layout from "./Layout.astro";
 import { Timer } from "../components/Timer";
 import { Board } from "../components/Board";
@@ -16,5 +16,5 @@ const { difficulty } = Astro.props
 <Layout title=`${GAME_TITLE} | ${difficulty.LABEL}`>
     <Timer client:load slot="title" />
     <GameOverModal client:load />
-    <Board client:load dimension={BOARD_SIZE} minesNumber={difficulty.MINES} />
+    <Board client:load dimension={difficulty.BOARD_SIZE} minesNumber={difficulty.MINES} />
 </Layout>

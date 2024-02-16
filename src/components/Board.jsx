@@ -4,20 +4,20 @@ import { safeCellsPositions } from '../logic/safeCells'
 import { generateMines } from '../logic/generateMines'
 import { generateBoardNumbers } from '../logic/generateBoard'
 import { getValidNearbyCells } from '../logic/getValidNearbyCells'
-import { gameState } from '../stores/gameState'
-import { GAME_STATES } from '../utils/constants'
+import { gameState } from '../stores/gameStateStore'
+import { GAME_STATES } from '../utils/gameStates'
 import { useStore } from '@nanostores/react'
+import { sleep } from '../utils/sleep'
 
 export const Board = ({ dimension, minesNumber }) => {
 	const initialBoard = Array(dimension.x * dimension.y).fill(0)
 	const [board, setBoard] = useState(initialBoard)
 	const [firstClick, setFirstClick] = useState(true)
-	const [cellsRevealed, setCellsRevealed] = useState(0)
 	const boardRef = useRef()
 	const cellsRefs = useRef([])
 	const mineCellsRefs = useRef([])
-	const safeCellsNum = dimension.x * dimension.y - minesNumber
 	const $gameState = useStore(gameState)
+	const safeCellsNum = dimension.x * dimension.y - minesNumber
 
 	const boardStyle = {
 		gridTemplateColumns: `repeat(${dimension.x}, auto)`
@@ -56,17 +56,44 @@ export const Board = ({ dimension, minesNumber }) => {
 		return nearbyRefs
 	}
 
-	useEffect(() => {
-		if ($gameState === GAME_STATES.LOSE) {
-			mineCellsRefs.current.forEach((cell) => cell.revealMine())
-		} else if ($gameState === GAME_STATES.WIN) {
-			mineCellsRefs.current.forEach((cell) => cell.mark())
+	const checkWin = () => {
+		const revealedCells = cellsRefs.current.filter((cell) => cell.isRevealed())
+
+		console.log(revealedCells.length, safeCellsNum)
+
+		if (revealedCells.length === safeCellsNum) {
+			gameState.set(GAME_STATES.WIN)
 		}
-	}, [$gameState])
+	}
 
 	useEffect(() => {
-		if (cellsRevealed === safeCellsNum) gameState.set(GAME_STATES.WIN)
-	}, [cellsRevealed])
+		GAME_STATES.IDLE.action = () => {
+			cellsRefs.current.forEach((cell) => cell.reset())
+			setBoard(initialBoard)
+			setFirstClick(true)
+		}
+
+		GAME_STATES.WIN.action = async () => {
+			mineCellsRefs.current.forEach((cell) => cell.mark())
+			await sleep(1000)
+			GAME_STATES.MODAL_OPEN.status = 'win'
+			gameState.set(GAME_STATES.MODAL_OPEN)
+		}
+
+		GAME_STATES.LOSE.action = async () => {
+			for (let cell of mineCellsRefs.current) {
+				await sleep(500)
+				cell.revealMine()
+			}
+			await sleep(1000)
+			GAME_STATES.MODAL_OPEN.status = 'lose'
+			gameState.set(GAME_STATES.MODAL_OPEN)
+		}
+	}, [])
+
+	useEffect(() => {
+		$gameState.action?.call() ?? null
+	}, [$gameState])
 
 	useEffect(() => {
 		if (board === initialBoard) return
@@ -88,7 +115,7 @@ export const Board = ({ dimension, minesNumber }) => {
 					index={index}
 					getNearbyRefs={getNearbyRefs}
 					ref={(el) => (cellsRefs.current[index] = el)}
-					incrementCellsRevealed={() => setCellsRevealed((prev) => prev + 1)}
+					checkWin={checkWin}
 				>
 					{value}
 				</Cell>
