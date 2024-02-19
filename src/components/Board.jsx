@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { Cell } from './Cell'
 import { safeCellsPositions } from '../logic/safeCells'
 import { generateMines } from '../logic/generateMines'
@@ -8,6 +8,7 @@ import { gameState } from '../stores/gameStateStore'
 import { GAME_STATES } from '../utils/gameStates'
 import { useStore } from '@nanostores/react'
 import { sleep } from '../utils/sleep'
+import { CELL_CONTENT } from '../utils/constants'
 
 export const Board = ({ dimension, minesNumber }) => {
 	const initialBoard = Array(dimension.x * dimension.y).fill(0)
@@ -25,12 +26,14 @@ export const Board = ({ dimension, minesNumber }) => {
 
 	const handleClick = (element) => {
 		if (element === boardRef.current) return
-		if (!firstClick) return
 
-		const parent = element.parentNode
-		const index = Array.from(parent.children).indexOf(element)
-		createBoard(index)
-		gameState.set(GAME_STATES.PLAYING)
+		if (firstClick) {
+			const parent = element.parentNode
+			const index = Array.from(parent.children).indexOf(element)
+			createBoard(index)
+			gameState.set(GAME_STATES.PLAYING)
+		} else {
+		}
 	}
 
 	// generate board randomly
@@ -59,11 +62,16 @@ export const Board = ({ dimension, minesNumber }) => {
 	const checkWin = () => {
 		const revealedCells = cellsRefs.current.filter((cell) => cell.isRevealed())
 
-		console.log(revealedCells.length, safeCellsNum)
-
 		if (revealedCells.length === safeCellsNum) {
 			gameState.set(GAME_STATES.WIN)
 		}
+	}
+
+	const formatValue = (value) => {
+		for (let item of Object.values(CELL_CONTENT)) {
+			if (item.VALUE === value) return item.LABEL
+		}
+		return value
 	}
 
 	useEffect(() => {
@@ -92,7 +100,7 @@ export const Board = ({ dimension, minesNumber }) => {
 	}, [])
 
 	useEffect(() => {
-		$gameState.action?.call() ?? null
+		$gameState.action?.call()
 	}, [$gameState])
 
 	useEffect(() => {
@@ -117,7 +125,7 @@ export const Board = ({ dimension, minesNumber }) => {
 					ref={(el) => (cellsRefs.current[index] = el)}
 					checkWin={checkWin}
 				>
-					{value}
+					{formatValue(value)}
 				</Cell>
 			))}
 		</div>
