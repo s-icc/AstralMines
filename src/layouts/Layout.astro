@@ -1,67 +1,68 @@
 ---
-import Header from '../components/Header.astro';
-import { DEFAULT_THEME } from '../utils/constants';
+import Header from "../components/Header.astro"
+import Menu from "../components/Menu.astro"
+import { DEFAULT_THEME } from "../utils/constants"
 
 interface Props {
-	title: string;
+  title: string
 }
 
-const { title } = Astro.props;
+const { title } = Astro.props
 ---
 
 <!doctype html>
 <html lang="en" data-theme={DEFAULT_THEME}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="minesweeper 2.0" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body class="p-8">
-		<Header>
-			<slot name="title" slot="title" />
-		</Header>
-		<main class="flex flex-col items-center justify-center">
-			<slot />
-		</main>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="minesweeper 2.0" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="p-8">
+    <Header>
+      <slot name="title" slot="title" />
+    </Header>
+    <main class="flex flex-col items-center justify-center">
+      <slot />
+    </main>
+  </body>
 </html>
 <style is:global>
-	@font-face {
-		font-family: 'Open Sans';
-		src: url('/fonts/Open_Sans/static/OpenSans-Regular.ttf') format('truetype');
-		font-weight: normal;
-		font-style: normal;
-	}
+  @font-face {
+    font-family: "Open Sans";
+    src: url("/fonts/Open_Sans/static/OpenSans-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
 
-	@font-face {
-		font-family: 'Space Mono';
-		src: url('/fonts/Space_Mono/SpaceMono-Regular.ttf') format('truetype');
-		font-weight: normal;
-		font-style: normal;
-	}
+  @font-face {
+    font-family: "Space Mono";
+    src: url("/fonts/Space_Mono/SpaceMono-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
 
-	* {
-		box-sizing: border-box;
-	}
+  * {
+    box-sizing: border-box;
+  }
 
-	html {
-		font-family: 'Space Mono', monospace;
-	}
+  html {
+    font-family: "Space Mono", monospace;
+  }
 
-	h1 {
-		color: oklch(var(--a));
-		font-size: 5rem;
-		font-weight: 700;
-		line-height: 1;
-		text-align: center;
-		margin: 0.5em 0;
-	}
+  h1 {
+    color: oklch(var(--a));
+    font-size: 5rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin: 0.5em 0;
+  }
 
-	.timer {
-        text-shadow: 0 0 20px oklch(var(--p));     
-    }
+  .timer {
+    text-shadow: 0 0 20px oklch(var(--p));
+  }
 </style>
 <!-- <script src="https://kit.fontawesome.com/97871308ab.js" crossorigin="anonymous"></script> -->

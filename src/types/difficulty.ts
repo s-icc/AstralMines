@@ -1,6 +1,11 @@
+export interface Dimension {
+  width: number
+  height: number
+}
+
 export interface Difficulty {
-	VALUE: string
-	LABEL: string
-	MINES: number
-	BOARD_SIZE: { x: number; y: number }
+  VALUE: string
+  LABEL: string
+  MINES: number
+  BOARD_SIZE: Dimension
 }

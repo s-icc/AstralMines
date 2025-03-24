@@ -1,0 +1,89 @@
+<h1 class="countdown">
+  <span
+    id="hours"
+    class="hidden"
+    style="--value:0;"
+    aria-live="polite"
+    aria-label="0"></span>
+  <span
+    id="minutes"
+    class="hidden"
+    style="--value:0;"
+    aria-live="polite"
+    aria-label="0"></span>
+  <span id="seconds" style="--value:0;" aria-live="polite" aria-label="0"
+  ></span>s
+</h1>
+
+<script>
+  import { gameState } from "@/stores/gameStateStore"
+  import { Game } from "@/utils/game"
+  import { time } from "@/stores/timeStore"
+
+  const hoursElement = document.getElementById("hours")
+  const minutesElement = document.getElementById("minutes")
+  const secondsElement = document.getElementById("seconds")
+
+  const formatTime = (secondsElapsed: number) => {
+    const seconds = secondsElapsed % 60
+    let minutes = null
+    let hours = null
+
+    if (secondsElapsed >= 60) {
+      minutes = Math.floor(secondsElapsed / 60) % 60
+    }
+
+    if (secondsElapsed >= 3600) {
+      hours = Math.floor(secondsElapsed / 3600)
+    }
+
+    return { hours, minutes, seconds }
+  }
+
+  time.subscribe((s) => {
+    if (
+      hoursElement === null ||
+      minutesElement === null ||
+      secondsElement === null
+    )
+      return
+
+    const { hours, minutes, seconds } = formatTime(s)
+
+    if (hours) {
+      hoursElement.classList.remove("hidden")
+      hoursElement.setAttribute("aria-label", hours.toString())
+      hoursElement.style.setProperty("--value", hours.toString())
+    }
+
+    if (minutes) {
+      minutesElement.classList.remove("hidden")
+      minutesElement.setAttribute("aria-label", minutes.toString())
+      minutesElement.style.setProperty("--value", minutes.toString())
+    }
+
+    secondsElement.setAttribute("aria-label", seconds.toString())
+    secondsElement.style.setProperty("--value", seconds.toString())
+
+    if (s === 3600) hoursElement.insertAdjacentText("afterend", "h")
+
+    if (s === 60) minutesElement.insertAdjacentText("afterend", "m")
+
+    setTimeout(() => {
+      if (gameState.get() === Game.PLAYING) {
+        time.set(s + 1)
+      }
+    }, 1000)
+  })
+
+  gameState.subscribe((s) => {
+    if (s === Game.IDLE) time.set(0)
+    if (s === Game.PLAYING) {
+      setTimeout(() => {
+        if (gameState.get() === Game.PLAYING) {
+          time.set(1)
+        }
+      }, 1000)
+    }
+  })
+</script>

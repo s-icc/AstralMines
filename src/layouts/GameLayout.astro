@@ -1,20 +1,24 @@
 ---
-import type { Difficulty } from "../types/difficulty";
-import { GAME_TITLE } from "../utils/constants";
-import Layout from "./Layout.astro";
-import { Timer } from "../components/Timer";
-import { Board } from "../components/Board";
-import { GameOverModal } from "../components/GameOverModal";
+import type { Difficulty } from "../types/difficulty"
+import { GAME_TITLE } from "../utils/constants"
+import Layout from "./Layout.astro"
+import Timer from "@/components/Timer.astro"
+import { Board } from "../components/Board.tsx"
+import { GameOverModal } from "../components/GameOverModal.tsx"
 
 interface Props {
-  difficulty: Difficulty;
+  difficulty: Difficulty
 }
 
 const { difficulty } = Astro.props
 ---
 
 <Layout title=`${GAME_TITLE} | ${difficulty.LABEL}`>
-    <Timer client:load slot="title" />
-    <GameOverModal client:load />
-    <Board client:load dimension={difficulty.BOARD_SIZE} minesNumber={difficulty.MINES} />
+  <Timer slot="title" />
+  <GameOverModal client:load />
+  <Board
+    client:load
+    dimension={difficulty.BOARD_SIZE}
+    minesNumber={difficulty.MINES}
+  />
 </Layout>
