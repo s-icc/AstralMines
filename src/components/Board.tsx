@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react"
 import { CellButton } from "./Cell"
 import { getValidNearbyCells } from "@/logic/getValidNearbyCells"
 import { gameState, setAction } from "@/stores/gameStateStore"
-import { Game } from "@/utils/game"
 import { useStore } from "@nanostores/react"
 import { sleep } from "@/utils/sleep"
 import { MODAL_LABELS } from "@/utils/constants"
@@ -40,7 +39,7 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
       const index = Array.from(parent?.children ?? []).indexOf(element)
       setFirstClick(false)
       createBoard(dimension, minesNumber, index)
-      gameState.set(Game.PLAYING)
+      gameState.set("PLAYING")
     } else {
     }
   }
@@ -53,7 +52,7 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
     const revealedCells = getRevealedCells()
 
     if (revealedCells.length === safeCellsNum) {
-      gameState.set(Game.WIN)
+      gameState.set("WIN")
     }
   }
 
@@ -69,14 +68,14 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
       markMines()
       await sleep(2000)
       setAction("MODAL_OPEN", () => MODAL_LABELS.WIN)
-      gameState.set(Game.MODAL_OPEN)
+      gameState.set("MODAL_OPEN")
     })
 
     setAction("LOSE", async () => {
       revealMines()
       await sleep(2000)
       setAction("MODAL_OPEN", () => MODAL_LABELS.LOSE)
-      gameState.set(Game.MODAL_OPEN)
+      gameState.set("MODAL_OPEN")
     })
   }, [])
 

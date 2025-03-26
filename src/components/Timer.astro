@@ -17,7 +17,6 @@
 
 <script>
   import { gameState } from "@/stores/gameStateStore"
-  import { Game } from "@/utils/game"
   import { time } from "@/stores/timeStore"
 
   const hoursElement = document.getElementById("hours")
@@ -70,17 +69,17 @@
     if (s === 60) minutesElement.insertAdjacentText("afterend", "m")
 
     setTimeout(() => {
-      if (gameState.get() === Game.PLAYING) {
+      if (gameState.get() === "PLAYING") {
         time.set(s + 1)
       }
     }, 1000)
   })
 
   gameState.subscribe((s) => {
-    if (s === Game.IDLE) time.set(0)
-    if (s === Game.PLAYING) {
+    if (s === "IDLE") time.set(0)
+    if (s === "PLAYING") {
       setTimeout(() => {
-        if (gameState.get() === Game.PLAYING) {
+        if (gameState.get() === "PLAYING") {
           time.set(1)
         }
       }, 1000)

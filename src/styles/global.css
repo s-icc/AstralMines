@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes:
+    forest --default,
+    retro,
+    dracula,
+    valentine,
+    night;
+}

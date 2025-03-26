@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react"
 import { gameState } from "../stores/gameStateStore"
 import { time } from "../stores/timeStore"
 import { useEffect, useRef, useState } from "react"
-import { Game } from "../utils/game"
+import { Game } from "@/stores/gameStateStore"
 import type { ModalContent } from "@/types/game"
 
 export const GameOverModal = () => {
@@ -15,13 +15,13 @@ export const GameOverModal = () => {
   })
 
   const handleClick = () => {
-    gameState.set(Game.IDLE)
+    gameState.set("IDLE")
   }
 
   useEffect(() => {
-    if ($gameState === Game.MODAL_OPEN) {
+    if ($gameState === "MODAL_OPEN") {
       modalRef.current?.showModal()
-      setModalContent($gameState.action())
+      setModalContent(Game[$gameState].action())
     }
   }, [$gameState])
 

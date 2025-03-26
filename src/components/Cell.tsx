@@ -1,7 +1,5 @@
 import { useEffect } from "react"
-import { Game, getCellContent } from "../utils/game"
-import { gameState } from "../stores/gameStateStore"
-import { useStore } from "@nanostores/react"
+import { getCellContent } from "../utils/game"
 import { markCell, revealCell } from "@/stores/board"
 import type { Cell, Coord } from "@/types/game"
 
@@ -18,8 +16,6 @@ export const CellButton = ({
   getNearbyCells,
   checkWin,
 }: CellProps) => {
-  const $gameState = useStore(gameState)
-
   const handleClick = () => {
     if (!cell.isFlagged) revealCell(coords)
   }

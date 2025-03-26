@@ -4,7 +4,6 @@ import { safeCellsPositions } from "@/logic/safeCells"
 import type { Dimension } from "@/types/difficulty"
 import { atom } from "nanostores"
 import { gameState } from "./gameStateStore"
-import { Game } from "@/utils/game"
 import type { Board, Cell, Coord } from "@/types/game"
 import { indexToCoords } from "@/utils/coords"
 
@@ -66,10 +65,10 @@ export const revealCell = (coord: Coord) => {
     setCell(coord, cell)
   }
 
-  if (game === Game.LOSE || game === Game.WIN) return
+  if (game === "LOSE" || game === "WIN") return
 
   if (cell.isMine) {
-    gameState.set(Game.LOSE)
+    gameState.set("LOSE")
   }
 }
 
@@ -77,7 +76,7 @@ export const markCell = (coord: Coord, isFlagged: boolean) => {
   const cell = getCell(coord)
   const game = gameState.get()
 
-  if (game === Game.LOSE || game === Game.WIN) return
+  if (game === "LOSE" || game === "WIN") return
 
   cell.isFlagged = isFlagged
   setCell(coord, cell)
