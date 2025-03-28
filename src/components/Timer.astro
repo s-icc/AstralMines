@@ -4,16 +4,28 @@
     class="hidden"
     style="--value:0;"
     aria-live="polite"
-    aria-label="0"></span>
+    aria-label="0"></span><span
+    id="hours-suffix"
+    data-suffix="h"
+    class="suffix hidden"></span>
   <span
     id="minutes"
     class="hidden"
     style="--value:0;"
     aria-live="polite"
-    aria-label="0"></span>
+    aria-label="0"></span><span
+    id="minutes-suffix"
+    data-suffix="m"
+    class="suffix hidden"></span>
   <span id="seconds" style="--value:0;" aria-live="polite" aria-label="0"
   ></span>s
 </h1>
+
+<style>
+  .suffix::before {
+    content: attr(data-suffix);
+  }
+</style>
 
 <script>
   import { gameState } from "@/stores/gameStateStore"
@@ -22,6 +34,9 @@
   const hoursElement = document.getElementById("hours")
   const minutesElement = document.getElementById("minutes")
   const secondsElement = document.getElementById("seconds")
+
+  const hourSuffixElement = document.getElementById("hours-suffix")
+  const minuteSuffixElement = document.getElementById("minutes-suffix")
 
   const formatTime = (secondsElapsed: number) => {
     const seconds = secondsElapsed % 60
@@ -43,7 +58,9 @@
     if (
       hoursElement === null ||
       minutesElement === null ||
-      secondsElement === null
+      secondsElement === null ||
+      hourSuffixElement === null ||
+      minuteSuffixElement === null
     )
       return
 
@@ -53,20 +70,28 @@
       hoursElement.classList.remove("hidden")
       hoursElement.setAttribute("aria-label", hours.toString())
       hoursElement.style.setProperty("--value", hours.toString())
+
+      hourSuffixElement.classList.remove("hidden")
     }
 
     if (minutes) {
       minutesElement.classList.remove("hidden")
       minutesElement.setAttribute("aria-label", minutes.toString())
       minutesElement.style.setProperty("--value", minutes.toString())
+
+      minuteSuffixElement.classList.remove("hidden")
     }
 
     secondsElement.setAttribute("aria-label", seconds.toString())
     secondsElement.style.setProperty("--value", seconds.toString())
 
-    if (s === 3600) hoursElement.insertAdjacentText("afterend", "h")
+    if (s === 0) {
+      hoursElement.classList.add("hidden")
+      minutesElement.classList.add("hidden")
 
-    if (s === 60) minutesElement.insertAdjacentText("afterend", "m")
+      hourSuffixElement.classList.add("hidden")
+      minuteSuffixElement.classList.add("hidden")
+    }
 
     setTimeout(() => {
       if (gameState.get() === "PLAYING") {
