@@ -1,0 +1,27 @@
+---
+import type { Difficulty } from "@/types/difficulty"
+import { CELL_MINE } from "@/utils/constants"
+
+interface Props {
+  difficulty: Difficulty
+}
+
+const { difficulty } = Astro.props
+---
+
+<div class="game-info">
+  <p>
+    {difficulty.MINES}
+    {CELL_MINE}
+  </p>
+</div>
+
+<style>
+  .game-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+  }
+</style>
