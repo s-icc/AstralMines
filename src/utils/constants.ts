@@ -25,7 +25,7 @@ export const NEARBY_CELLS = [
   { x: 1, y: 1 },
 ]
 
-export const CELL_MARK = "🚩"
+export const CELL_FLAG = "🚩"
 export const CELL_MINE = "💣"
 
 export const MODAL_LABELS: Record<string, ModalContent> = {

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { getCellContent } from "../utils/game"
-import { markCell, revealCell } from "@/stores/board"
+import { flagCell, revealCell } from "@/stores/board"
 import type { Cell, Coord } from "@/types/game"
 
 interface CellProps {
@@ -21,7 +21,7 @@ export const CellButton = ({
   }
 
   const handleContextMenu = () => {
-    markCell(coords, !cell.isFlagged)
+    flagCell(coords, !cell.isFlagged)
   }
 
   // execute when the cell is revealed

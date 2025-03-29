@@ -5,6 +5,7 @@ import Layout from "./Layout.astro"
 import Timer from "@/components/Timer.astro"
 import { Board } from "@/components/Board"
 import { GameOverModal } from "@/components/GameOverModal"
+import GameInfo from "@/components/GameInfo.astro"
 
 interface Props {
   difficulty: Difficulty
@@ -14,11 +15,14 @@ const { difficulty } = Astro.props
 ---
 
 <Layout title=`${GAME_TITLE} | ${difficulty.LABEL}`>
-  <Timer slot="title" />
-  <GameOverModal client:load />
-  <Board
-    client:load
-    dimension={difficulty.BOARD_SIZE}
-    minesNumber={difficulty.MINES}
-  />
+  <section class="flex flex-col items-center justify-center">
+    <Timer slot="title" />
+    <GameOverModal client:load />
+    <GameInfo difficulty={difficulty} />
+    <Board
+      client:load
+      dimension={difficulty.BOARD_SIZE}
+      minesNumber={difficulty.MINES}
+    />
+  </section>
 </Layout>

@@ -72,13 +72,22 @@ export const revealCell = (coord: Coord) => {
   }
 }
 
-export const markCell = (coord: Coord, isFlagged: boolean) => {
+export const flagCell = (coord: Coord, isFlagged: boolean) => {
   const cell = getCell(coord)
   const game = gameState.get()
 
   if (game === "LOSE" || game === "WIN") return
 
-  cell.isFlagged = isFlagged
+  const flaggedCells = getFlaggedCells().length
+  const minesCells = getMineCells().length
+
+  // limit the number of flagged cells to the number of mines
+  if (flaggedCells === minesCells) {
+    cell.isFlagged = false
+  } else {
+    cell.isFlagged = isFlagged
+  }
+
   setCell(coord, cell)
 }
 
@@ -88,7 +97,7 @@ export const getRevealedCells = () =>
     .map((row) => row.filter((cell) => cell.isRevealed))
     .flat()
 
-export const getMarkedCells = () =>
+export const getFlaggedCells = () =>
   boardState
     .get()
     .map((row) => row.filter((cell) => cell.isFlagged))
@@ -108,10 +117,10 @@ export const revealMines = () => {
   })
 }
 
-export const markMines = () => {
+export const flagMines = () => {
   const mineCells = getMineCells()
   mineCells.forEach((cell) => {
     const coords = getCellCoords(cell)
-    if (coords) markCell(coords, true)
+    if (coords) flagCell(coords, true)
   })
 }
