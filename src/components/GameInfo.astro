@@ -1,6 +1,6 @@
 ---
 import type { Difficulty } from "@/types/difficulty"
-import { CELL_MINE } from "@/utils/constants"
+import { CELL_MINE, CELL_FLAG } from "@/utils/constants"
 
 interface Props {
   difficulty: Difficulty
@@ -9,19 +9,32 @@ interface Props {
 const { difficulty } = Astro.props
 ---
 
-<div class="game-info">
-  <p>
-    {difficulty.MINES}
+<div class="flex gap-4 mb-4">
+  <p class="flex gap-1 text-xl">
+    <span id="mines" class="text-xl"
+      >{difficulty.MINES.toString().padStart(2, "0")}</span
+    >
     {CELL_MINE}
+  </p>
+
+  <p class="flex gap-1 text-xl">
+    <span id="flags" class="text-xl">{difficulty.MINES}</span>
+    {CELL_FLAG}
   </p>
 </div>
 
-<style>
-  .game-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+<script>
+  import { boardState, getFlaggedCells } from "@/stores/board"
+  const flags = document.getElementById("flags")
+
+  if (flags) {
+    const flagsNumber = parseInt(flags.textContent || "0")
+
+    boardState.listen(() => {
+      const flaggedCells = getFlaggedCells()
+      flags.textContent = (flagsNumber - flaggedCells.length)
+        .toString()
+        .padStart(2, "0")
+    })
   }
-</style>
+</script>

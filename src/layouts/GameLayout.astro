@@ -15,12 +15,14 @@ const { difficulty } = Astro.props
 ---
 
 <Layout title=`${GAME_TITLE} | ${difficulty.LABEL}`>
-  <Timer slot="title" />
-  <GameOverModal client:load />
-  <GameInfo difficulty={difficulty} />
-  <Board
-    client:load
-    dimension={difficulty.BOARD_SIZE}
-    minesNumber={difficulty.MINES}
-  />
+  <section class="flex flex-col items-center justify-center">
+    <Timer slot="title" />
+    <GameOverModal client:load />
+    <GameInfo difficulty={difficulty} />
+    <Board
+      client:load
+      dimension={difficulty.BOARD_SIZE}
+      minesNumber={difficulty.MINES}
+    />
+  </section>
 </Layout>

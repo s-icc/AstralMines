@@ -11,7 +11,7 @@ import {
   createBoard,
   getRevealedCells,
   initBoard,
-  markMines,
+  flagMines,
   revealMines,
 } from "@/stores/board"
 import type { Dimension } from "@/types/difficulty"
@@ -65,7 +65,7 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
     })
 
     setAction("WIN", async () => {
-      markMines()
+      flagMines()
       await sleep(2000)
       setAction("MODAL_OPEN", () => MODAL_LABELS.WIN)
       gameState.set("MODAL_OPEN")
