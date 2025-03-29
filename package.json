@@ -1,31 +1,31 @@
 {
-	"name": "astral-web",
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro check && astro build",
-		"preview": "astro preview",
-		"astro": "astro"
-	},
-	"dependencies": {
-		"@nanostores/react": "^0.7.1",
-		"@tailwindcss/vite": "^4.0.16",
-		"astro": "^5.5.4",
-		"just-unique": "^4.2.0",
-		"nanostores": "^0.9.5",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"tailwindcss": "^4.0.16",
-		"theme-change": "^2.5.0"
-	},
-	"devDependencies": {
-		"@astrojs/check": "^0.9.4",
-		"@astrojs/react": "^4.1.5",
-		"@types/react": "^18.2.48",
-		"@types/react-dom": "^18.2.18",
-		"daisyui": "^5.0.9",
-		"typescript": "^5.2.2"
-	}
+  "name": "astral-mines",
+  "type": "module",
+  "version": "0.1.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@nanostores/react": "^0.7.1",
+    "@tailwindcss/vite": "^4.0.16",
+    "astro": "^5.5.4",
+    "just-unique": "^4.2.0",
+    "nanostores": "^0.9.5",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^4.0.16",
+    "theme-change": "^2.5.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/react": "^4.1.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "daisyui": "^5.0.9",
+    "typescript": "^5.2.2"
+  }
 }
