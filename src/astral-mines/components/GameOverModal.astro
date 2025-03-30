@@ -1,0 +1,46 @@
+<dialog id="modal" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box flex flex-col items-center gap-2">
+    <h3 id="modal-title" class="font-bold text-xl"></h3>
+    <h4 id="score" class="font-bold text-3xl"></h4>
+    <p id="modal-description" class="py-4"></p>
+    <div class="modal-action">
+      <form method="dialog" class="flex gap-2">
+        <button id="btn-restart" class="btn btn-primary">Restart</button>
+      </form>
+      <a href=`/astral-mines` class="btn btn-outline btn-secondary">Home</a>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { Game, gameState } from "@astral-mines/stores/gameStateStore"
+  import { time } from "@astral-mines/stores/timeStore"
+  import type { ModalContent } from "@astral-mines/types/game"
+
+  const modal = document.getElementById("modal") as HTMLDialogElement
+  const title = document.getElementById("modal-title")
+  const description = document.getElementById("modal-description")
+  const score = document.getElementById("score")
+  const restartButton = document.getElementById("btn-restart")
+
+  if (restartButton) {
+    restartButton.addEventListener("click", () => {
+      gameState.set("IDLE")
+    })
+  }
+
+  const setModalContent = (content: ModalContent) => {
+    if (!title || !description || !score) return
+
+    title.textContent = content.title
+    description.textContent = content.description
+    score.textContent = time.get().toString()
+  }
+
+  gameState.subscribe((s) => {
+    if (s === "MODAL_OPEN") {
+      modal?.showModal()
+      setModalContent(Game[s].action())
+    }
+  })
+</script>

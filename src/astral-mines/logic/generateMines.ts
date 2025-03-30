@@ -1,5 +1,5 @@
-import type { Dimension } from "@/types/difficulty"
-import type { Coord } from "@/types/game"
+import type { Dimension } from "@astral-mines/types/difficulty"
+import type { Coord } from "@astral-mines/types/game"
 
 export const generateMines = (
   mines: number,

@@ -1,6 +1,6 @@
-import type { Coord } from "@/types/game"
-import type { Dimension } from "@/types/difficulty"
-import { NEARBY_CELLS } from "../utils/constants"
+import type { Coord } from "@astral-mines/types/game"
+import type { Dimension } from "@astral-mines/types/difficulty"
+import { NEARBY_CELLS } from "@astral-mines/utils/constants"
 
 export const getValidNearbyCells = (centerCoords: Coord, bounds: Dimension) => {
   const coords = []

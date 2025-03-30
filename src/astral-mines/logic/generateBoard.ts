@@ -1,7 +1,7 @@
-import type { Coord } from "@/types/game"
+import type { Coord } from "@astral-mines/types/game"
 import { getValidNearbyCells } from "./getValidNearbyCells"
-import type { Board } from "@/types/game"
-import type { Dimension } from "@/types/difficulty"
+import type { Board } from "@astral-mines/types/game"
+import type { Dimension } from "@astral-mines/types/difficulty"
 
 export const generateBoard = (
   board: Board,

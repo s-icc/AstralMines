@@ -1,6 +1,6 @@
-import type { Cell } from "@/types/game"
+import type { Cell } from "@astral-mines/types/game"
 import { CELL_FLAG, CELL_MINE } from "./constants"
-import { gameState } from "@/stores/gameStateStore"
+import { gameState } from "@astral-mines/stores/gameStateStore"
 
 export const getCellContent = (cell: Cell) => {
   if (gameState.get() === "LOSE" && cell.isMine) return CELL_MINE

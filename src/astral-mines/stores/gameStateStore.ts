@@ -1,5 +1,5 @@
 import { atom } from "nanostores"
-import type { GameState, GameStatus } from "@/types/game"
+import type { GameState, GameStatus } from "@astral-mines/types/game"
 
 export const Game: Record<GameStatus, GameState> = {
   IDLE: {

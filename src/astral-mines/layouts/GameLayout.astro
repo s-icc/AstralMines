@@ -1,11 +1,11 @@
 ---
-import type { Difficulty } from "@/types/difficulty"
-import { GAME_TITLE } from "@/utils/constants"
+import type { Difficulty } from "@astral-mines/types/difficulty"
+import { GAME_TITLE } from "@astral-mines/utils/constants"
 import Layout from "./Layout.astro"
-import Timer from "@/components/Timer.astro"
-import { Board } from "@/components/Board"
-import { GameOverModal } from "@/components/GameOverModal"
-import GameInfo from "@/components/GameInfo.astro"
+import Timer from "@astral-mines/components/Timer.astro"
+import { Board } from "@astral-mines/components/Board"
+import GameOverModal from "@astral-mines/components/GameOverModal.astro"
+import GameInfo from "@astral-mines/components/GameInfo.astro"
 
 interface Props {
   difficulty: Difficulty
@@ -17,7 +17,7 @@ const { difficulty } = Astro.props
 <Layout title=`${GAME_TITLE} | ${difficulty.LABEL}`>
   <section class="flex flex-col items-center justify-center">
     <Timer slot="title" />
-    <GameOverModal client:load />
+    <GameOverModal />
     <GameInfo difficulty={difficulty} />
     <Board
       client:load

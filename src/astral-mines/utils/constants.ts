@@ -1,4 +1,4 @@
-import type { ModalContent } from "@/types/game"
+import type { ModalContent } from "@astral-mines/types/game"
 
 export const GAME_TITLE = "Astral Mines"
 

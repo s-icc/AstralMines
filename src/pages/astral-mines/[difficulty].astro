@@ -1,0 +1,10 @@
+---
+import { DIFFICULTIES } from "@astral-mines/utils/difficulties"
+import GameLayout from "@astral-mines/layouts/GameLayout.astro"
+
+const difficulty = Astro.params.difficulty || "easy"
+
+export const prerender = false
+---
+
+<GameLayout difficulty={DIFFICULTIES[difficulty]} />

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
-import { getCellContent } from "../utils/game"
-import { flagCell, revealCell } from "@/stores/board"
-import type { Cell, Coord } from "@/types/game"
+import { getCellContent } from "@astral-mines/utils/game"
+import { flagCell, revealCell } from "@astral-mines/stores/board"
+import type { Cell, Coord } from "@astral-mines/types/game"
 
 interface CellProps {
   cell: Cell

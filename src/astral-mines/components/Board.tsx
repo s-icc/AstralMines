@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react"
-import { CellButton } from "./Cell"
-import { getValidNearbyCells } from "@/logic/getValidNearbyCells"
-import { gameState, setAction } from "@/stores/gameStateStore"
+import { CellButton } from "@astral-mines/components/Cell"
+import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
+import { gameState, setAction } from "@astral-mines/stores/gameStateStore"
 import { useStore } from "@nanostores/react"
-import { sleep } from "@/utils/sleep"
-import { MODAL_LABELS } from "@/utils/constants"
-import type { Coord } from "@/types/game"
+import { sleep } from "@astral-mines/utils/sleep"
+import { MODAL_LABELS } from "@astral-mines/utils/constants"
+import type { Coord } from "@astral-mines/types/game"
 import {
   boardState,
   createBoard,
@@ -13,8 +13,8 @@ import {
   initBoard,
   flagMines,
   revealMines,
-} from "@/stores/board"
-import type { Dimension } from "@/types/difficulty"
+} from "@astral-mines/stores/board"
+import type { Dimension } from "@astral-mines/types/difficulty"
 
 interface BoardProps {
   dimension: Dimension
