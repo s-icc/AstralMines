@@ -1,6 +1,6 @@
-import type { Difficulty } from "@astral-mines/types/difficulty"
+import type { Difficulty, DifficultyName } from "@astral-mines/types/difficulty"
 
-export const DIFFICULTIES: Record<string, Difficulty> = {
+export const DIFFICULTIES: Record<DifficultyName, Difficulty> = {
   easy: {
     LABEL: "Easy 😀",
     MINES: 8,

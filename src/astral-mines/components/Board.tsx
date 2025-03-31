@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo } from "react"
 import { CellButton } from "@astral-mines/components/Cell"
 import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
 import { gameState, setAction } from "@astral-mines/stores/gameStateStore"
@@ -25,7 +25,10 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
   const $boardState = useStore(boardState)
   const [firstClick, setFirstClick] = useState(true)
   const boardRef = useRef<HTMLDivElement | null>(null)
-  const safeCellsNum = dimension.width * dimension.height - minesNumber
+  const safeCellsNum = useMemo(
+    () => dimension.width * dimension.height - minesNumber,
+    []
+  )
 
   const boardStyle = {
     gridTemplateColumns: `repeat(${dimension.width}, auto)`,
@@ -42,10 +45,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
       gameState.set("PLAYING")
     } else {
     }
-  }
-
-  const getNearbyCells = (coords: Coord) => {
-    return getValidNearbyCells(coords, dimension)
   }
 
   const checkWin = () => {
@@ -93,7 +92,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
             key={`${rowIndex}-${cellIndex}`}
             cell={cell}
             coords={{ x: cellIndex, y: rowIndex }}
-            getNearbyCells={getNearbyCells}
             checkWin={checkWin}
           />
         ))

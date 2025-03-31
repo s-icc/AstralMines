@@ -2,20 +2,24 @@ import { useEffect } from "react"
 import { getCellContent } from "@astral-mines/utils/game"
 import { flagCell, revealCell } from "@astral-mines/stores/board"
 import type { Cell, Coord } from "@astral-mines/types/game"
+import { useStore } from "@nanostores/react"
+import { difficultyStore } from "@astral-mines/stores/difficulty"
+import { DIFFICULTIES } from "@astral-mines/utils/difficulties"
+import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
 
 interface CellProps {
   cell: Cell
   coords: Coord
-  getNearbyCells: (coords: Coord) => Coord[]
   checkWin: () => void
 }
 
-export const CellButton = ({
-  cell,
-  coords,
-  getNearbyCells,
-  checkWin,
-}: CellProps) => {
+export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
+  const $difficultyName = useStore(difficultyStore)
+  const nearbyCells = getValidNearbyCells(
+    coords,
+    DIFFICULTIES[$difficultyName].BOARD_SIZE
+  )
+
   const handleClick = () => {
     if (!cell.isFlagged) revealCell(coords)
   }
@@ -28,7 +32,6 @@ export const CellButton = ({
   useEffect(() => {
     if (!cell.isRevealed) return
 
-    const nearbyCells = getNearbyCells(coords)
     // if there are no mines nearby, reveals the nearby cells
     if (cell.adjacentMines === 0)
       nearbyCells.forEach((nearCoords) => revealCell(nearCoords))

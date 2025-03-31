@@ -8,3 +8,5 @@ export interface Difficulty {
   MINES: number
   BOARD_SIZE: Dimension
 }
+
+export type DifficultyName = "easy" | "medium" | "hard"

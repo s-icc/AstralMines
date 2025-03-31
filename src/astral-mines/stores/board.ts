@@ -1,11 +1,8 @@
 import { generateBoard } from "@astral-mines/logic/generateBoard"
-import { generateMines } from "@astral-mines/logic/generateMines"
-import { safeCellsPositions } from "@astral-mines/logic/safeCells"
 import type { Dimension } from "@astral-mines/types/difficulty"
 import { atom } from "nanostores"
 import { gameState } from "./gameStateStore"
 import type { Board, Cell, Coord } from "@astral-mines/types/game"
-import { indexToCoords } from "@astral-mines/utils/coords"
 
 export const boardState = atom<Board>([])
 
@@ -27,14 +24,9 @@ export const createBoard = (
   minesNumber: number,
   centerIndex: number
 ) => {
-  const safeCells = safeCellsPositions(
-    indexToCoords(centerIndex, dimension.width),
-    dimension
-  )
-  const minesPositions = generateMines(minesNumber, safeCells, dimension)
   const board = boardState.get()
 
-  boardState.set(generateBoard(board, dimension, minesPositions))
+  boardState.set(generateBoard(board, centerIndex, dimension, minesNumber))
 }
 
 export const getCell = (coord: Coord) => boardState.get()[coord.y][coord.x]

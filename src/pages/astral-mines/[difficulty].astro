@@ -1,8 +1,16 @@
 ---
 import { DIFFICULTIES } from "@astral-mines/utils/difficulties"
 import GameLayout from "@astral-mines/layouts/GameLayout.astro"
+import type { DifficultyName } from "@/astral-mines/types/difficulty"
+import { difficultyStore } from "@/astral-mines/stores/difficulty"
 
-const difficulty = Astro.params.difficulty || "easy"
+export async function getStaticPaths() {
+  return [{ params: { difficulty } }]
+}
+
+const difficulty: DifficultyName = Astro.params.difficulty
+
+difficultyStore.set(difficulty)
 
 export const prerender = false
 ---
