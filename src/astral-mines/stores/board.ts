@@ -50,25 +50,19 @@ export const getCellCoords = (cell: Cell) => {
 
 export const revealCell = (coord: Coord) => {
   const cell = getCell(coord)
-  const game = gameState.get()
 
-  if (!cell.isFlagged) {
-    cell.isRevealed = true
-    setCell(coord, cell)
-  }
-
-  if (game === "LOSE" || game === "WIN") return
+  if (cell.isFlagged) return
 
   if (cell.isMine) {
     gameState.set("LOSE")
   }
+
+  cell.isRevealed = true
+  setCell(coord, cell)
 }
 
 export const flagCell = (coord: Coord, isFlagged: boolean) => {
   const cell = getCell(coord)
-  const game = gameState.get()
-
-  if (game === "LOSE" || game === "WIN") return
 
   const flaggedCells = getFlaggedCells().length
   const minesCells = getMineCells().length

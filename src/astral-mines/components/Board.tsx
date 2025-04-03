@@ -37,7 +37,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
       setFirstClick(false)
       createBoard(dimension, minesNumber, index)
       gameState.set("PLAYING")
-    } else {
     }
   }
 

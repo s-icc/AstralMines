@@ -3,6 +3,8 @@ import { getCellContent } from "@astral-mines/utils/game"
 import { flagCell, revealCell } from "@astral-mines/stores/board"
 import type { Cell, Coord } from "@astral-mines/types/game"
 import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
+import { gameState } from "../stores/gameStateStore"
+import { useStore } from "@nanostores/react"
 
 interface CellProps {
   cell: Cell
@@ -11,13 +13,28 @@ interface CellProps {
 }
 
 export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
+  const $gameState = useStore(gameState)
   const nearbyCells = getValidNearbyCells(coords)
 
   const handleClick = () => {
-    if (!cell.isFlagged) revealCell(coords)
+    if (
+      $gameState === "LOSE" ||
+      $gameState === "WIN" ||
+      $gameState === "MODAL_OPEN"
+    )
+      return
+
+    revealCell(coords)
   }
 
   const handleContextMenu = () => {
+    if (
+      $gameState === "LOSE" ||
+      $gameState === "WIN" ||
+      $gameState === "MODAL_OPEN"
+    )
+      return
+
     flagCell(coords, !cell.isFlagged)
   }
 
@@ -35,8 +52,7 @@ export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
   return (
     <button
       disabled={cell.isRevealed}
-      className="btn btn-primary text-xl w-12 h-12 disabled:btn-outline"
-      style={{ color: "oklch(var(--a))" }}
+      className="btn btn-primary text-xl w-12 h-12 text-base-content"
       onClick={handleClick}
       onContextMenu={handleContextMenu}
     >
