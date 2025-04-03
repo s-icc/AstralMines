@@ -10,7 +10,17 @@
       <a href=`/astral-mines` class="btn btn-outline btn-secondary">Home</a>
     </div>
   </div>
+
+  <form method="dialog" class="modal-backdrop">
+    <button aria-label="close modal">close</button>
+  </form>
 </dialog>
+
+<style>
+  :root {
+    scrollbar-gutter: auto;
+  }
+</style>
 
 <script>
   import { Game, gameState } from "@astral-mines/stores/gameStateStore"
