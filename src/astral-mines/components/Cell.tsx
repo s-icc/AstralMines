@@ -2,9 +2,6 @@ import { useEffect } from "react"
 import { getCellContent } from "@astral-mines/utils/game"
 import { flagCell, revealCell } from "@astral-mines/stores/board"
 import type { Cell, Coord } from "@astral-mines/types/game"
-import { useStore } from "@nanostores/react"
-import { difficultyStore } from "@astral-mines/stores/difficulty"
-import { DIFFICULTIES } from "@astral-mines/utils/difficulties"
 import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
 
 interface CellProps {
@@ -14,11 +11,7 @@ interface CellProps {
 }
 
 export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
-  const $difficultyName = useStore(difficultyStore)
-  const nearbyCells = getValidNearbyCells(
-    coords,
-    DIFFICULTIES[$difficultyName].BOARD_SIZE
-  )
+  const nearbyCells = getValidNearbyCells(coords)
 
   const handleClick = () => {
     if (!cell.isFlagged) revealCell(coords)

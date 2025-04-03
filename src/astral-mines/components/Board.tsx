@@ -1,11 +1,9 @@
 import { useState, useRef, useEffect, useMemo } from "react"
 import { CellButton } from "@astral-mines/components/Cell"
-import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
 import { gameState, setAction } from "@astral-mines/stores/gameStateStore"
 import { useStore } from "@nanostores/react"
 import { sleep } from "@astral-mines/utils/sleep"
 import { MODAL_LABELS } from "@astral-mines/utils/constants"
-import type { Coord } from "@astral-mines/types/game"
 import {
   boardState,
   createBoard,
@@ -29,10 +27,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
     () => dimension.width * dimension.height - minesNumber,
     []
   )
-
-  const boardStyle = {
-    gridTemplateColumns: `repeat(${dimension.width}, auto)`,
-  }
 
   const handleClick = (element: Element) => {
     if (element === boardRef.current) return
@@ -81,7 +75,9 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
   return (
     <div
       className="grid gap-2 select-none"
-      style={boardStyle}
+      style={{
+        gridTemplateColumns: `repeat(${dimension.width}, auto)`,
+      }}
       onContextMenu={(e) => e.preventDefault()}
       onClick={(e) => handleClick(e.target as Element)}
       ref={boardRef}

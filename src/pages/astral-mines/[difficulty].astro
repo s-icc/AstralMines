@@ -1,18 +1,27 @@
 ---
-import { DIFFICULTIES } from "@astral-mines/utils/difficulties"
 import GameLayout from "@astral-mines/layouts/GameLayout.astro"
 import type { DifficultyName } from "@/astral-mines/types/difficulty"
-import { difficultyStore } from "@/astral-mines/stores/difficulty"
+import { DIFFICULTIES } from "@/astral-mines/utils/difficulties"
 
-export async function getStaticPaths() {
-  return [{ params: { difficulty } }]
-}
-
-const difficulty: DifficultyName = Astro.params.difficulty
-
-difficultyStore.set(difficulty)
+const difficultyName = Astro.params.difficulty as DifficultyName
+const difficulty = DIFFICULTIES[difficultyName]
 
 export const prerender = false
 ---
 
-<GameLayout difficulty={DIFFICULTIES[difficulty]} />
+<GameLayout difficulty={difficulty} />
+<span data-difficulty={difficultyName} hidden aria-hidden="true"></span>
+
+<script>
+  import type { DifficultyName } from "@/astral-mines/types/difficulty"
+  import { difficultyStore } from "@astral-mines/stores/difficulty"
+
+  const difficultyNameElement = document.querySelector("[data-difficulty]")
+
+  if (difficultyNameElement) {
+    const difficultyName = difficultyNameElement?.getAttribute(
+      "data-difficulty"
+    ) as DifficultyName
+    difficultyStore.set(difficultyName)
+  }
+</script>

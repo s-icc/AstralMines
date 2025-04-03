@@ -1,8 +1,10 @@
 import type { Coord } from "@astral-mines/types/game"
-import type { Dimension } from "@astral-mines/types/difficulty"
 import { NEARBY_CELLS } from "@astral-mines/utils/constants"
+import { DIFFICULTIES } from "../utils/difficulties"
+import { difficultyStore } from "../stores/difficulty"
 
-export const getValidNearbyCells = (centerCoords: Coord, bounds: Dimension) => {
+export const getValidNearbyCells = (centerCoords: Coord) => {
+  const bounds = DIFFICULTIES[difficultyStore.get()].BOARD_SIZE
   const coords = []
 
   // loop through the nearby cells

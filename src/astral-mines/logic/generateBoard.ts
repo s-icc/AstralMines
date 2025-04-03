@@ -11,12 +11,12 @@ export const generateBoard = (
   minesNumber: number
 ) => {
   const centerCoord = indexToCoords(centerIndex, dimension.width)
-  const safeCells = safeCellsPositions(centerCoord, dimension)
+  const safeCells = safeCellsPositions(centerCoord)
 
   const mines = generateMines(safeCells, minesNumber, dimension)
 
   for (const mine of mines) {
-    const validNearbyCells = getValidNearbyCells(mine, dimension)
+    const validNearbyCells = getValidNearbyCells(mine)
     board[mine.y][mine.x].isMine = true
 
     // loop through the nearby cells to increment the numbers
@@ -63,9 +63,9 @@ const includesCoord = (arr: Coord[], coord: Coord) => {
   return arr.some((c) => c.x === coord.x && c.y === coord.y)
 }
 
-const safeCellsPositions = (centerCoords: Coord, bounds: Dimension) => {
+const safeCellsPositions = (centerCoords: Coord) => {
   const positions = [centerCoords]
-  positions.push(...getValidNearbyCells(centerCoords, bounds))
+  positions.push(...getValidNearbyCells(centerCoords))
 
   return positions
 }
