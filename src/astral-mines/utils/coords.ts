@@ -1,4 +1,4 @@
-import type { Coord } from "@/types/game"
+import type { Coord } from "@astral-mines/types/game"
 
 export const indexToCoords = (index: number, dimensionWidth: number) => {
   return {

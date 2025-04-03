@@ -1,6 +1,6 @@
 ---
-import type { Difficulty } from "@/types/difficulty"
-import { CELL_MINE, CELL_FLAG } from "@/utils/constants"
+import type { Difficulty } from "@astral-mines/types/difficulty"
+import { CELL_MINE, CELL_FLAG } from "@astral-mines/utils/constants"
 
 interface Props {
   difficulty: Difficulty
@@ -18,13 +18,15 @@ const { difficulty } = Astro.props
   </p>
 
   <p class="flex gap-1 text-xl">
-    <span id="flags" class="text-xl">{difficulty.MINES}</span>
+    <span id="flags" class="text-xl"
+      >{difficulty.MINES.toString().padStart(2, "0")}</span
+    >
     {CELL_FLAG}
   </p>
 </div>
 
 <script>
-  import { boardState, getFlaggedCells } from "@/stores/board"
+  import { boardState, getFlaggedCells } from "@astral-mines/stores/board"
   const flags = document.getElementById("flags")
 
   if (flags) {

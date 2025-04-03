@@ -1,11 +1,9 @@
-import { useState, useRef, useEffect } from "react"
-import { CellButton } from "./Cell"
-import { getValidNearbyCells } from "@/logic/getValidNearbyCells"
-import { gameState, setAction } from "@/stores/gameStateStore"
+import { useState, useRef, useEffect, useMemo } from "react"
+import { CellButton } from "@astral-mines/components/Cell"
+import { gameState, setAction } from "@astral-mines/stores/gameStateStore"
 import { useStore } from "@nanostores/react"
-import { sleep } from "@/utils/sleep"
-import { MODAL_LABELS } from "@/utils/constants"
-import type { Coord } from "@/types/game"
+import { sleep } from "@astral-mines/utils/sleep"
+import { MODAL_LABELS } from "@astral-mines/utils/constants"
 import {
   boardState,
   createBoard,
@@ -13,8 +11,8 @@ import {
   initBoard,
   flagMines,
   revealMines,
-} from "@/stores/board"
-import type { Dimension } from "@/types/difficulty"
+} from "@astral-mines/stores/board"
+import type { Dimension } from "@astral-mines/types/difficulty"
 
 interface BoardProps {
   dimension: Dimension
@@ -25,11 +23,10 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
   const $boardState = useStore(boardState)
   const [firstClick, setFirstClick] = useState(true)
   const boardRef = useRef<HTMLDivElement | null>(null)
-  const safeCellsNum = dimension.width * dimension.height - minesNumber
-
-  const boardStyle = {
-    gridTemplateColumns: `repeat(${dimension.width}, auto)`,
-  }
+  const safeCellsNum = useMemo(
+    () => dimension.width * dimension.height - minesNumber,
+    []
+  )
 
   const handleClick = (element: Element) => {
     if (element === boardRef.current) return
@@ -42,10 +39,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
       gameState.set("PLAYING")
     } else {
     }
-  }
-
-  const getNearbyCells = (coords: Coord) => {
-    return getValidNearbyCells(coords, dimension)
   }
 
   const checkWin = () => {
@@ -82,7 +75,9 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
   return (
     <div
       className="grid gap-2 select-none"
-      style={boardStyle}
+      style={{
+        gridTemplateColumns: `repeat(${dimension.width}, auto)`,
+      }}
       onContextMenu={(e) => e.preventDefault()}
       onClick={(e) => handleClick(e.target as Element)}
       ref={boardRef}
@@ -93,7 +88,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
             key={`${rowIndex}-${cellIndex}`}
             cell={cell}
             coords={{ x: cellIndex, y: rowIndex }}
-            getNearbyCells={getNearbyCells}
             checkWin={checkWin}
           />
         ))

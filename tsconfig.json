@@ -7,7 +7,8 @@
     "jsxImportSource": "react",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@astral-mines/*": ["./src/astral-mines/*"]
     }
   }
 }

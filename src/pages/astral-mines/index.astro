@@ -1,0 +1,31 @@
+---
+import Layout from "@astral-mines/layouts/Layout.astro"
+import { GAME_TITLE } from "@astral-mines/utils/constants"
+import { DIFFICULTIES } from "@astral-mines/utils/difficulties"
+---
+
+<Layout title={GAME_TITLE}>
+  <h1 class="text-gradient" slot="title">Astral Mines</h1>
+  <div class="flex gap-4">
+    {
+      Object.entries(DIFFICULTIES).map(([difficulty, data]) => {
+        return (
+          <a href={`/astral-mines/${difficulty}`} class="btn btn-primary">
+            {data.LABEL}
+          </a>
+        )
+      })
+    }
+  </div>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    font-size: 20px;
+    line-height: 1.6;
+  }
+</style>

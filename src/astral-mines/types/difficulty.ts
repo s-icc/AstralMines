@@ -4,8 +4,9 @@ export interface Dimension {
 }
 
 export interface Difficulty {
-  VALUE: string
   LABEL: string
   MINES: number
   BOARD_SIZE: Dimension
 }
+
+export type DifficultyName = "easy" | "medium" | "hard"
