@@ -13,6 +13,7 @@ import {
   revealMines,
 } from "@astral-mines/stores/board"
 import type { Dimension } from "@astral-mines/types/difficulty"
+import { setModalContent } from "../stores/modal"
 
 interface BoardProps {
   dimension: Dimension
@@ -37,7 +38,6 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
       setFirstClick(false)
       createBoard(dimension, minesNumber, index)
       gameState.set("PLAYING")
-    } else {
     }
   }
 
@@ -60,15 +60,13 @@ export const Board = ({ dimension, minesNumber }: BoardProps) => {
     setAction("WIN", async () => {
       flagMines()
       await sleep(2000)
-      setAction("MODAL_OPEN", () => MODAL_LABELS.WIN)
-      gameState.set("MODAL_OPEN")
+      setModalContent(MODAL_LABELS.WIN)
     })
 
     setAction("LOSE", async () => {
       revealMines()
       await sleep(2000)
-      setAction("MODAL_OPEN", () => MODAL_LABELS.LOSE)
-      gameState.set("MODAL_OPEN")
+      setModalContent(MODAL_LABELS.LOSE)
     })
   }, [])
 
