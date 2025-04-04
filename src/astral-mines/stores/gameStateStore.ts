@@ -14,9 +14,6 @@ export const Game: Record<GameStatus, GameState> = {
   LOSE: {
     action: () => {},
   },
-  MODAL_OPEN: {
-    action: () => {},
-  },
 }
 
 export const gameState = atom<GameStatus>("IDLE")
