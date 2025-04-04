@@ -1,10 +1,16 @@
 import { useEffect } from "react"
 import { getCellContent } from "@astral-mines/utils/game"
-import { flagCell, revealCell } from "@astral-mines/stores/board"
+import {
+  flagCell,
+  getFlaggedCells,
+  getMineCells,
+  revealCell,
+} from "@astral-mines/stores/board"
 import type { Cell, Coord } from "@astral-mines/types/game"
 import { getValidNearbyCells } from "@astral-mines/logic/getValidNearbyCells"
 import { gameState } from "../stores/gameStateStore"
 import { useStore } from "@nanostores/react"
+import { cn } from "@/lib/utils"
 
 interface CellProps {
   cell: Cell
@@ -25,7 +31,18 @@ export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
   const handleContextMenu = () => {
     if ($gameState === "LOSE" || $gameState === "WIN") return
 
-    flagCell(coords, !cell.isFlagged)
+    const flaggedCells = getFlaggedCells().length
+    const minesCells = getMineCells().length
+
+    // limit the number of flagged cells to the number of mines
+    if (flaggedCells < minesCells) {
+      flagCell(coords, !cell.isFlagged)
+      return
+    }
+
+    if (cell.isFlagged) {
+      flagCell(coords, false)
+    }
   }
 
   // execute when the cell is revealed
@@ -41,8 +58,11 @@ export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
 
   return (
     <button
-      disabled={cell.isRevealed}
-      className="btn btn-primary text-xl w-12 h-12 text-base-content"
+      className={cn(
+        "btn text-xl w-12 h-12 text-base-content",
+        cell.isMine && cell.isRevealed ? "btn-error" : "btn-primary",
+        cell.isRevealed && (cell.isMine ? "btn-outline" : "btn-disabled")
+      )}
       onClick={handleClick}
       onContextMenu={handleContextMenu}
     >

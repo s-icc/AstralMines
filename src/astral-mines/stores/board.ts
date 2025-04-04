@@ -64,16 +64,7 @@ export const revealCell = (coord: Coord) => {
 export const flagCell = (coord: Coord, isFlagged: boolean) => {
   const cell = getCell(coord)
 
-  const flaggedCells = getFlaggedCells().length
-  const minesCells = getMineCells().length
-
-  // limit the number of flagged cells to the number of mines
-  if (flaggedCells === minesCells) {
-    cell.isFlagged = false
-  } else {
-    cell.isFlagged = isFlagged
-  }
-
+  cell.isFlagged = isFlagged
   setCell(coord, cell)
 }
 
