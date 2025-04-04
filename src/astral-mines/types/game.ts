@@ -3,7 +3,7 @@ export type Coord = {
   y: number
 }
 
-export type GameStatus = "IDLE" | "PLAYING" | "WIN" | "LOSE" | "MODAL_OPEN"
+export type GameStatus = "IDLE" | "PLAYING" | "WIN" | "LOSE"
 
 export interface GameState {
   action: Function
@@ -12,6 +12,11 @@ export interface GameState {
 export interface ModalContent {
   title: string
   description: string
+}
+
+export type ModalState = {
+  isOpen: boolean
+  content: ModalContent
 }
 
 export interface Cell {

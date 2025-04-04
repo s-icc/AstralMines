@@ -23,9 +23,9 @@
 </style>
 
 <script>
-  import { Game, gameState } from "@astral-mines/stores/gameStateStore"
+  import { gameState } from "@astral-mines/stores/gameStateStore"
+  import { modalState } from "@astral-mines/stores/modal"
   import { time } from "@astral-mines/stores/timeStore"
-  import type { ModalContent } from "@astral-mines/types/game"
 
   const modal = document.getElementById("modal") as HTMLDialogElement
   const title = document.getElementById("modal-title")
@@ -39,18 +39,15 @@
     })
   }
 
-  const setModalContent = (content: ModalContent) => {
+  modalState.subscribe((s) => {
     if (!title || !description || !score) return
 
-    title.textContent = content.title
-    description.textContent = content.description
+    title.textContent = s.content.title
+    description.textContent = s.content.description
     score.textContent = time.get().toString()
-  }
 
-  gameState.subscribe((s) => {
-    if (s === "MODAL_OPEN") {
+    if (s.isOpen) {
       modal?.showModal()
-      setModalContent(Game[s].action())
     }
   })
 </script>

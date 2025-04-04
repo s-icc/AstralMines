@@ -17,23 +17,13 @@ export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
   const nearbyCells = getValidNearbyCells(coords)
 
   const handleClick = () => {
-    if (
-      $gameState === "LOSE" ||
-      $gameState === "WIN" ||
-      $gameState === "MODAL_OPEN"
-    )
-      return
+    if ($gameState === "LOSE" || $gameState === "WIN") return
 
     revealCell(coords)
   }
 
   const handleContextMenu = () => {
-    if (
-      $gameState === "LOSE" ||
-      $gameState === "WIN" ||
-      $gameState === "MODAL_OPEN"
-    )
-      return
+    if ($gameState === "LOSE" || $gameState === "WIN") return
 
     flagCell(coords, !cell.isFlagged)
   }
