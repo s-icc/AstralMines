@@ -2,7 +2,7 @@ import type { Coord } from "@astral-mines/types/game"
 import { getValidNearbyCells } from "./getValidNearbyCells"
 import type { Board } from "@astral-mines/types/game"
 import type { Dimension } from "@astral-mines/types/difficulty"
-import { indexToCoords } from "../utils/coords"
+import { indexToCoords } from "@astral-mines/lib/coords"
 
 export const generateBoard = (
   board: Board,

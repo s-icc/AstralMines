@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { getCellContent } from "@astral-mines/utils/game"
+import { getCellContent } from "@astral-mines/lib/game"
 import {
   flagCell,
   getFlaggedCells,

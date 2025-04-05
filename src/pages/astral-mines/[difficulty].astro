@@ -1,7 +1,7 @@
 ---
 import GameLayout from "@astral-mines/layouts/GameLayout.astro"
-import type { DifficultyName } from "@/astral-mines/types/difficulty"
-import { DIFFICULTIES } from "@/astral-mines/utils/difficulties"
+import type { DifficultyName } from "@astral-mines/types/difficulty"
+import { DIFFICULTIES } from "@astral-mines/lib/difficulties"
 
 const difficultyName = Astro.params.difficulty as DifficultyName
 const difficulty = DIFFICULTIES[difficultyName]
