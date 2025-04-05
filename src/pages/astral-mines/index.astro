@@ -5,7 +5,7 @@ import { DIFFICULTIES } from "@astral-mines/lib/difficulties"
 ---
 
 <Layout title={GAME_TITLE}>
-  <h1 class="text-gradient" slot="title">Astral Mines</h1>
+  <h1 class="text-gradient" slot="title">{GAME_TITLE}</h1>
   <div class="flex gap-4">
     {
       Object.entries(DIFFICULTIES).map(([difficulty, data]) => {
