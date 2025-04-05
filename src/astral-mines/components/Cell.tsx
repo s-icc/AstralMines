@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { getCellContent } from "@astral-mines/utils/game"
+import { getCellContent } from "@astral-mines/lib/game"
 import {
   flagCell,
   getFlaggedCells,
@@ -48,6 +48,9 @@ export const CellButton = ({ cell, coords, checkWin }: CellProps) => {
   // execute when the cell is revealed
   useEffect(() => {
     if (!cell.isRevealed) return
+
+    // if the game is not playing, don't reveal nearby cells
+    if ($gameState !== "PLAYING") return
 
     // if there are no mines nearby, reveals the nearby cells
     if (cell.adjacentMines === 0)

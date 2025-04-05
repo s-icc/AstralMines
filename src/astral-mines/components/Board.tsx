@@ -2,8 +2,8 @@ import { useState, useRef, useEffect, useMemo } from "react"
 import { CellButton } from "@astral-mines/components/Cell"
 import { gameState, setAction } from "@astral-mines/stores/gameStateStore"
 import { useStore } from "@nanostores/react"
-import { sleep } from "@astral-mines/utils/sleep"
-import { MODAL_LABELS } from "@astral-mines/utils/constants"
+import { sleep } from "@astral-mines/lib/sleep"
+import { MODAL_LABELS } from "@astral-mines/lib/constants"
 import {
   boardState,
   createBoard,
