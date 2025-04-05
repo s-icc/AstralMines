@@ -1,8 +1,9 @@
 ---
 import Layout from "@astral-mines/layouts/Layout.astro"
+import { SITE_NAME } from "@/lib/constants"
 ---
 
-<Layout title="Mini Mania">
-  <h1>Mini Mania</h1>
+<Layout title={SITE_NAME}>
+  <h1>{SITE_NAME}</h1>
   <a href="/astral-mines" class="btn btn-secondary">Astral Mines</a>
 </Layout>
