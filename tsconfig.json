@@ -8,7 +8,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@astral-mines/*": ["./src/astral-mines/*"]
+      "@astral-mines/*": ["./src/astral-mines/*"],
+      "@tic-tac-morph/*": ["./src/tic-tac-morph/*"]
     }
   }
 }
