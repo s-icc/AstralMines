@@ -1,0 +1,185 @@
+---
+import Layout from "@tic-tac-morph/layouts/Layout.astro"
+---
+
+<Layout>
+  <canvas id="game-canvas" slot="game" class="w-full h-screen block touch-none"
+  ></canvas>
+</Layout>
+
+<style>
+  canvas {
+    background-color: #334155;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById("game-canvas") as HTMLCanvasElement
+  const ctx = canvas.getContext("2d")
+  const { MouseButton } = await import("@/lib/constants")
+
+  const BOARD_SIZE = 3
+  const CELL_SIZE = 100
+  const MIN_SCALE = 0.5
+  const MAX_SCALE = 2.5
+  const LINE_WIDTH = 2
+  let scale = 1
+  let origin = {
+    x:
+      window.innerWidth / 2 -
+      (BOARD_SIZE * CELL_SIZE) / 2 -
+      (LINE_WIDTH * BOARD_SIZE - 1),
+    y:
+      window.innerHeight / 2 -
+      (BOARD_SIZE * CELL_SIZE) / 2 -
+      (LINE_WIDTH * BOARD_SIZE - 1),
+  }
+  let isPanning = false
+  let start = { x: 0, y: 0 }
+
+  // Estado del tablero
+  const board = Array.from({ length: BOARD_SIZE }, () =>
+    Array(BOARD_SIZE).fill("")
+  )
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    draw()
+  }
+
+  function draw() {
+    if (!ctx) return
+
+    ctx.save()
+    ctx.setTransform(1, 0, 0, 1, 0, 0) // reset transform
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.translate(origin.x, origin.y)
+    ctx.scale(scale, scale)
+
+    // Fondo
+    ctx.fillStyle = "transparent"
+    ctx.fillRect(0, 0, BOARD_SIZE * CELL_SIZE, BOARD_SIZE * CELL_SIZE)
+
+    // Celdas
+    ctx.strokeStyle = "#f1f5f9" // zinc-800
+    ctx.lineWidth = LINE_WIDTH
+
+    for (let i = 0; i <= BOARD_SIZE; i++) {
+      // Vertival
+      if (i > 0 && i < BOARD_SIZE) {
+        ctx.beginPath()
+        ctx.moveTo(i * CELL_SIZE, 0)
+        ctx.lineTo(i * CELL_SIZE, BOARD_SIZE * CELL_SIZE)
+        ctx.stroke()
+      }
+
+      // Horizontal
+      if (i > 0 && i < BOARD_SIZE) {
+        ctx.beginPath()
+        ctx.moveTo(0, i * CELL_SIZE)
+        ctx.lineTo(BOARD_SIZE * CELL_SIZE, i * CELL_SIZE)
+        ctx.stroke()
+      }
+    }
+
+    // Dibujar X / O
+    ctx.fillStyle = "#f1f5f9" // zinc-900
+    ctx.font = `${CELL_SIZE / 2}px sans-serif`
+    ctx.textAlign = "center"
+    ctx.textBaseline = "middle"
+
+    for (let row = 0; row < BOARD_SIZE; row++) {
+      for (let col = 0; col < BOARD_SIZE; col++) {
+        const val = board[row][col]
+        if (val) {
+          ctx.fillText(
+            val,
+            col * CELL_SIZE + CELL_SIZE / 2,
+            row * CELL_SIZE + CELL_SIZE / 2
+          )
+        }
+      }
+    }
+
+    ctx.restore()
+  }
+
+  function getCellFromCoords(x: number, y: number) {
+    // Convertir coords reales -> coords en canvas -> celda
+    const transformedX = (x - origin.x) / scale
+    const transformedY = (y - origin.y) / scale
+
+    const col = Math.floor(transformedX / CELL_SIZE)
+    const row = Math.floor(transformedY / CELL_SIZE)
+
+    if (col >= 0 && col < BOARD_SIZE && row >= 0 && row < BOARD_SIZE) {
+      return { row, col }
+    }
+    return null
+  }
+
+  let currentPlayer = "X"
+
+  function handleClick(e: MouseEvent) {
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+
+    const cell = getCellFromCoords(x, y)
+    if (cell && board[cell.row][cell.col] === "") {
+      board[cell.row][cell.col] = currentPlayer
+      currentPlayer = currentPlayer === "X" ? "O" : "X"
+      draw()
+    }
+  }
+
+  // Zoom
+  function onWheel(e: WheelEvent) {
+    e.preventDefault()
+    const delta = -e.deltaY * 0.001
+    const mouse = { x: e.offsetX, y: e.offsetY }
+    const newScale = Math.min(Math.max(MIN_SCALE, scale + delta), MAX_SCALE)
+    const zoomFactor = newScale / scale
+
+    origin.x -= (mouse.x - origin.x) * (zoomFactor - 1)
+    origin.y -= (mouse.y - origin.y) * (zoomFactor - 1)
+    scale = newScale
+
+    draw()
+  }
+
+  // Paneo
+  function onMouseDown(e: MouseEvent) {
+    if (e.button !== MouseButton.Secondary) return
+
+    isPanning = true
+    start = { x: e.clientX - origin.x, y: e.clientY - origin.y }
+  }
+
+  function onMouseMove(e: MouseEvent) {
+    if (!isPanning) return
+    origin.x = e.clientX - start.x
+    origin.y = e.clientY - start.y
+    draw()
+  }
+
+  function onMouseUp() {
+    isPanning = false
+  }
+
+  // Eventos
+  canvas.addEventListener("mousedown", onMouseDown)
+  canvas.addEventListener("mousemove", onMouseMove)
+  canvas.addEventListener("mouseup", onMouseUp)
+  canvas.addEventListener("mouseleave", onMouseUp)
+  canvas.addEventListener("wheel", onWheel)
+  canvas.addEventListener("click", handleClick)
+  window.addEventListener("resize", resizeCanvas)
+  window.addEventListener("contextmenu", (e) => e.preventDefault())
+
+  resizeCanvas()
+</script>
