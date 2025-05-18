@@ -1,9 +1,27 @@
 ---
 import Layout from "@astral-mines/layouts/Layout.astro"
 import { SITE_NAME } from "@/lib/constants"
+import { toTitleCase } from "@/lib/utils"
+
+const gamesDirPath = Object.keys(import.meta.glob("./**"))
+
+const gamesPath = new Set(
+  gamesDirPath.map((dirPath) => {
+    const gameName = dirPath.match(/(?<=\.\/).*(?=\/)/)
+    return gameName ? gameName[0] : "."
+  })
+).values()
 ---
 
 <Layout title={SITE_NAME}>
   <h1>{SITE_NAME}</h1>
-  <a href="/astral-mines" class="btn btn-secondary">Astral Mines</a>
+  <div class="flex gap-4">
+    {
+      gamesPath.map((path) => (
+        <a href={`/${path}`} class="btn btn-primary">
+          {toTitleCase(path.replace(/-/g, " "))}
+        </a>
+      ))
+    }
+  </div>
 </Layout>
