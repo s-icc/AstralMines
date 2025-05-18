@@ -1,0 +1,24 @@
+---
+import { GAME_TITLE } from "@tic-tac-morph/lib/constants"
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{GAME_TITLE}</title>
+  </head>
+  <body>
+    <slot name="game" />
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100dvh;
+    display: flex;
+  }
+</style>
